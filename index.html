@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body {
+                margin: 0;
+            }
+            canvas{
+                height: 100%;
+                width: 100%;
+            }
+			.main{
+				left: 10%;
+				top: 45%;
+				position: absolute;
+				font-size: 350%;
+				text-shadow: 1px -2px white;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<p>А я пончик сделал!!!</p>
+		</div>
+		<script src="js/three.js"></script>
+		<script>
+const scene = new THREE.Scene();
+			//Создаём камеру
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			//Создаём рендер
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			//Создаём геометрию и материал
+			const texture = new THREE.TextureLoader().load('textures/IMG_20221109_130319.jpg');
+			const cube = new THREE.Mesh(
+				new THREE.BoxGeometry( 3, 3, 3 ),
+				new THREE.MeshBasicMaterial( { map: texture } )
+			);
+			const torusNormal = new THREE.TextureLoader().load('textures/193_norm.jpg');	
+			const torus = new THREE.Mesh(
+				new THREE.TorusGeometry( 5, 3, 15, 45 ),
+				new THREE.MeshBasicMaterial( {
+					color: 0xD29D3F,
+					normalMap: torusNormal
+				} )
+			);
+			
+			const backTexture = new THREE.TextureLoader().load('textures/dsc_5204.jpg');
+			scene.background = backTexture;
+
+			//Добавляем в сцену
+			scene.add( cube );
+			scene.add( torus );
+			
+			cube.position.y = -4;
+			cube.position.x = -10;
+
+			torus.position.z = -8;
+			torus.position.x = 10;
+
+			//Позиция камеры
+			camera.position.z = 10;
+
+			function animate() {
+				requestAnimationFrame( animate );
+
+				cube.rotation.y += 0.01;
+
+				torus.rotation.x += 0.001;
+				torus.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+			animate();
+			</script>
+	</body>
+</html>
